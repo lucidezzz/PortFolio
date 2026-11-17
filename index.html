@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCIO SUQUISUPA — PORTAFOLIO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-electric: #0047FF;
+            --ink-black: #0A0A0A;
+            --ink-white: #F5F5F5;
+            --font-display: 'Anton', Impact, sans-serif;
+            --font-body: 'Inter', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: var(--bg-electric);
+            color: var(--ink-black);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            selection-background-color: var(--ink-black);
+            selection-color: var(--bg-electric);
+        }
+
+        ::selection {
+            background: var(--ink-black);
+            color: var(--bg-electric);
+        }
+
+        /* ================= NAVEGACIÓN FLOTANTE (ESTILO CARGO) ================= */
+        .nav-trigger {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            background-color: var(--ink-black);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .nav-trigger:hover {
+            transform: scale(1.08);
+        }
+
+        .nav-trigger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background-color: var(--ink-white);
+            transition: all 0.25s ease;
+        }
+
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 260px;
+            background-color: var(--ink-black);
+            color: var(--ink-white);
+            padding: 24px 28px 36px;
+            z-index: 1001;
+            transform: translateX(105%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 2px solid var(--ink-black);
+            border-bottom: 2px solid var(--ink-black);
+        }
+
+        .nav-drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .drawer-brand {
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .drawer-close {
+            background: none;
+            border: none;
+            color: var(--ink-white);
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0 4px;
+        }
+
+        .drawer-close:hover {
+            color: var(--bg-electric);
+        }
+
+        .drawer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 36px;
+        }
+
+        .drawer-links button {
+            background: none;
+            border: none;
+            color: var(--ink-white);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .drawer-links button:hover,
+        .drawer-links button.active {
+            color: var(--bg-electric);
+            transform: translateX(4px);
+        }
+
+        .drawer-links button.active::before {
+            content: "● ";
+            font-size: 0.7rem;
+        }
+
+        .drawer-external {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-top: 1px solid #262626;
+            padding-top: 20px;
+        }
+
+        .drawer-external a {
+            color: var(--ink-white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .drawer-external a:hover {
+            color: var(--bg-electric);
+        }
+
+        /* ================= CONTENEDOR PRINCIPAL Y PESTAÑAS ================= */
+        main {
+            width: 100%;
+            min-height: 100vh;
+            padding: 28px;
+        }
+
+        .tab-section {
+            display: none;
+            animation: fadeIn 0.35s ease forwards;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= EFECTO SCANLINE / CRT ================= */
+        .crt-frame {
+            position: relative;
+            background-color: var(--ink-black);
+            border: 2px solid var(--ink-black);
+            overflow: hidden;
+        }
+
+        .crt-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0) 0px,
+                rgba(0, 0, 0, 0) 2px,
+                rgba(0, 0, 0, 0.38) 3px,
+                rgba(0, 0, 0, 0.38) 4px
+            );
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .crt-frame:hover::after {
+            opacity: 0.15;
+        }
+
+        .crt-frame img, .crt-frame svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%) contrast(125%);
+            transition: filter 0.35s ease, transform 0.4s ease;
+        }
+
+        .crt-frame:hover img {
+            filter: grayscale(0%) contrast(105%);
+            transform: scale(1.02);
+        }
+
+        /* ================= PESTAÑA 1: DATOS GENERALES (LANDING HERO + BIO) ================= */
+        .hero-landing {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: calc(100vh - 56px);
+            padding-bottom: 40px;
+            border-bottom: 3px solid var(--ink-black);
+        }
+
+        .hero-graphic-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0 30px;
+        }
+
+        .hero-avatar-box {
+            width: 270px;
+            height: 310px;
+            position: relative;
+        }
+
+        .hero-big-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 0.88;
+        }
+
+        .big-nav-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-display);
+            font-size: clamp(3.6rem, 11vw, 9.5rem);
+            color: var(--ink-black);
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: -0.02em;
+            text-align: left;
+            transition: transform 0.2s ease, color 0.2s ease, -webkit-text-stroke 0.2s ease;
+        }
+
+        .big-nav-btn:hover {
+            transform: translateX(16px);
+            color: transparent;
+            -webkit-text-stroke: 2.5px var(--ink-black);
+        }
+
+        /* Bloque Split Screen de Datos Generales */
+        .profile-split {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 48px;
+            padding-top: 48px;
+            align-items: end;
+        }
+
+        .profile-photo-card {
+            width: 100%;
+            height: 620px;
+        }
+
+        .profile-info-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 24px;
+        }
+
+        .display-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6.5vw, 6rem);
+            line-height: 0.92;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        .display-subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2.5vw, 2.1rem);
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+        }
+
+        .bio-text {
+            font-size: 1rem;
+            line-height: 1.55;
+            font-weight: 600;
+            max-width: 620px;
+        }
+
+        .brutalist-block {
+            border-top: 2px solid var(--ink-black);
+            padding-top: 14px;
+        }
+
+        .block-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .slash-list {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2vw, 1.55rem);
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .contact-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-top: 8px;
+        }
+
+        .brutal-link {
+            display: inline-block;
+            background-color: var(--ink-black);
+            color: var(--ink-white);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 12px 20px;
+            letter-spacing: 0.04em;
+            border: 2px solid var(--ink-black);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .brutal-link:hover {
+            background-color: transparent;
+            color: var(--ink-black);
+        }
+
+        /* ================= PESTAÑA 2: GALERÍA DE PROYECTOS (SPLIT-SCREEN 50/50) ================= */
+        .section-header {
+            padding: 12px 0 36px;
+            border-bottom: 3px solid var(--ink-black);
+            margin-bottom: 48px;
+        }
+
+        .project-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            min-height: 78vh;
+            margin-bottom: 72px;
+            padding-bottom: 56px;
+            border-bottom: 2px solid var(--ink-black);
+            align-items: end;
+        }
+
+        .project-row:last-child {
+            border-bottom: none;
+            margin-bottom: 24px;
+        }
+
+        .project-media {
+            width: 100%;
+            height: 580px;
+        }
+
+        .project-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 18px;
+        }
+
+        .project-index {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+        }
+
+        .project-desc {
+            font-size: 0.98rem;
+            font-weight: 600;
+            line-height: 1.5;
+            max-width: 540px;
+        }
+
+        /* ================= PESTAÑA 3: HOBBIES ================= */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .hobby-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid var(--ink-black);
+            padding: 20px;
+            transition: transform 0.25s ease, background-color 0.25s ease;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-6px);
+            background-color: rgba(10, 10, 10, 0.06);
+        }
+
+        .hobby-media {
+            width: 100%;
+            height: 320px;
+            margin-bottom: 20px;
+        }
+
+        .hobby-title {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            line-height: 0.95;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .hobby-desc {
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.45;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            margin-top: 64px;
+            padding-top: 20px;
+            border-top: 3px solid var(--ink-black);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* ================= RESPONSIVE DESIGN ================= */
+        @media (max-width: 960px) {
+            .profile-split,
+            .project-row {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                min-height: auto;
+            }
+
+            .profile-photo-card,
+            .project-media {
+                height: 440px;
+            }
+
+            .hobbies-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 540px) {
+            main {
+                padding: 18px;
+            }
+
+            .nav-trigger {
+                top: 16px;
+                right: 16px;
+            }
+
+            .profile-photo-card,
+            .project-media {
+                height: 360px;
+            }
+
+            .big-nav-btn:hover {
+                transform: translateX(6px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOTÓN CIRCULAR FLOTANTE -->
+    <button class="nav-trigger" id="menuOpenBtn" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- MENÚ DESPLEGABLE NEGRO -->
+    <aside class="nav-drawer" id="navDrawer">
+        <div class="drawer-header">
+            <div class="drawer-brand">LUCİO<br>SUQUİSUPA</div>
+            <button class="drawer-close" id="menuCloseBtn" aria-label="Cerrar menú">✕</button>
+        </div>
+        <ul class="drawer-links">
+            <li><button class="nav-tab-btn active" data-target="tab-general">Datos Generales</button></li>
+            <li><button class="nav-tab-btn" data-target="tab-proyectos">Proyectos</button></li>
+            <li><button class="nav-tab-btn" data-target="tab-hobbies">Hobbies</button></li>
+        </ul>
+        <ul class="drawer-external">
+            <li><a href="mailto:lsuquisupao@gmail.com">→ Email</a></li>
+            <li><a href="https://wa.me/593987448874" target="_blank" rel="noopener">→ WhatsApp</a></li>
+            <li><a href="#contacto-directo" class="nav-tab-btn" data-target="tab-general">→ Información</a></li>
+        </ul>
+    </aside>
+
+    <main>
+        <!-- =========================================================
+             PESTAÑA 1: DATOS GENERALES
+             ========================================================= -->
+        <section id="tab-general" class="tab-section active">
+            <!-- Bloque Superior Estilo Landing Mucamas Asesinas -->
+            <div class="hero-landing">
+                <div class="hero-graphic-wrap">
+                    <!-- Emblema Vectorial Central estilo Underground / Chazki-Paisaje -->
+                    <div class="hero-avatar-box" title="Lucio Suquisupa — Marca Personal">
+                        <svg viewBox="0 0 300 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Composición geométrica/brutalista inspirada en tus marcas del portafolio -->
+                            <rect x="20" y="20" width="260" height="290" fill="#0A0A0A"/>
+                            <circle cx="150" cy="145" r="88" fill="#0047FF" stroke="#F5F5F5" stroke-width="5"/>
+                            <!-- Pétalos / Geometría Paisaje Estudio -->
+                            <path d="M150 57 C185 105, 185 185, 150 233 C115 185, 115 105, 150 57 Z" fill="#0A0A0A" stroke="#F5F5F5" stroke-width="3"/>
+                            <path d="M62 145 C110 110, 190 110, 238 145 C190 180, 110 180, 62 145 Z" fill="#0A0A0A" stroke="#F5F5F5" stroke-width="3"/>
+                            <circle cx="150" cy="145" r="22" fill="#F5F5F5"/>
+                            <text x="150" y="282" text-anchor="middle" fill="#F5F5F5" font-family="Anton, sans-serif" font-size="26" letter-spacing="2">LUCİO SUQUİSUPA</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Navegación Tipográfica Gigante -->
+                <nav class="hero-big-nav" aria-label="Navegación principal">
+                    <button class="big-nav-btn" onclick="document.getElementById('perfil-detalle').scrollIntoView({behavior:'smooth'})">DATOS GENERALES</button>
+                    <button class="big-nav-btn nav-tab-btn" data-target="tab-proyectos">PROYECTOS</button>
+                    <button class="big-nav-btn nav-tab-btn" data-target="tab-hobbies">HOBBİES</button>
+                </nav>
+            </div>
+
+            <!-- Bloque Detallado de Datos Generales (Split Screen) -->
+            <div id="perfil-detalle" class="profile-split">
+                <div class="crt-frame profile-photo-card">
+                    <!-- REEMPLAZA src="img/perfil.png" CON TU FOTO DEL PDF (PÁGINA 2) -->
+                    <img src="img/perfil.png" 
+                         onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=900&q=80'" 
+                         alt="Fotografía de Lucio Suquisupa con guitarra">
+                </div>
+
+                <div class="profile-info-col">
+                    <div>
+                        <p class="block-label">01 / PERFİL PROFESİONAL</p>
+                        <h1 class="display-title">LUCİO<br>SUQUİSUPA</h1>
+                        <h2 class="display-subtitle">"DİSEÑADOR GRÁFİCO &amp; DİRECTOR VİSUAL"</h2>
+                    </div>
+
+                    <p class="bio-text">
+                        Antes de proponer cualquier solución visual, parto de un análisis del negocio, su mercado y sus objetivos. A partir de ahí, desarrollo identidades de marca completas, desde el concepto hasta su aplicación en distintos medios, cuidando que cada decisión tenga un sustento claro para consolidar marcas a largo plazo.
+                    </p>
+
+                    <div class="brutalist-block">
+                        <p class="block-label">FORMACİÓN ACADÉMİCA &amp; EXPERIENCİA</p>
+                        <p class="slash-list">
+                            DİSEÑO GRÁFİCO — UNİVERSİDAD DEL AZUAY / DİRECTOR DE DİSEÑO — CONSORCİO EDUCATİVO CONTİNENTAL (2020–2025) / FREELANCER ACTUAL
+                        </p>
+                    </div>
+
+                    <div class="brutalist-block">
+                        <p class="block-label">HABİLİDADES &amp; HERRAMİENTAS</p>
+                        <p class="slash-list">
+                            İLLUSTRATOR / PHOTOSHOP / İNDESİGN / AFTER EFFECTS / PREMIERE / BLENDER / TOUCHDESİGNER / LIGHTROOM / R STUDİO / HTML5 &amp; CSS3
+                        </p>
+                    </div>
+
+                    <div id="contacto-directo" class="contact-bar">
+                        <a href="mailto:lsuquisupao@gmail.com" class="brutal-link">→ lsuquisupao@gmail.com</a>
+                        <a href="https://wa.me/593987448874" target="_blank" rel="noopener" class="brutal-link">→ +593 98 744 8874</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             PESTAÑA 2: GALERÍA DE PROYECTOS
+             ========================================================= -->
+        <section id="tab-proyectos" class="tab-section">
+            <header class="section-header">
+                <p class="block-label">02 / ARCHİVO SELECCİONADO 2020–2026</p>
+                <h2 class="display-title">GALERÍA DE PROYECTOS</h2>
+            </header>
+
+            <!-- PROYECTO 1: CHAZKI -->
+            <article class="project-row">
+                <div class="crt-frame project-media">
+                    <!-- REEMPLAZA src="img/proyecto-chazki.png" CON LA CAPTURA DE CHAZKI (PÁG. 5-6) -->
+                    <img src="img/proyecto-chazki.png" 
+                         onerror="this.src='https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=80'" 
+                         alt="Branding Deportivo Chazki">
+                </div>
+                <div class="project-details">
+                    <span class="project-index">PROYECTO 01 // BRANDİNG</span>
+                    <h3 class="display-title">CHAZKİ</h3>
+                    <h4 class="display-subtitle">"İDENTİDAD VİSUAL &amp; INDUMENTARİA DEPORTİVA"</h4>
+                    <p class="project-desc">
+                        Construcción integral de marca deportiva de alto rendimiento inspirada en la velocidad y resistencia andina. Desarrollo de isotipo geométrico, tipografía customizada y aplicación sobre indumentaria atlética y calzado.
+                    </p>
+                    <div class="brutalist-block">
+                        <p class="block-label">TECNOLOGÍAS &amp; HERRAMİENTAS</p>
+                        <p class="slash-list">ADOBE İLLUSTRATOR / PHOTOSHOP / MOCKUP 3D / DİRECCİÓN DE ARTE</p>
+                    </div>
+                    <div>
+                        <a href="mailto:lsuquisupao@gmail.com?subject=Consulta%20Proyecto%20Chazki" class="brutal-link">→ SOLİCİTAR CASO DE ESTUDİO</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROYECTO 2: SABORES CON HISTORIA -->
+            <article class="project-row">
+                <div class="crt-frame project-media">
+                    <!-- REEMPLAZA src="img/proyecto-sabores.png" CON LA CAPTURA DE SABORES CON HISTORIA (PÁG. 9) -->
+                    <img src="img/proyecto-sabores.png" 
+                         onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=900&q=80'" 
+                         alt="Editorial Sabores con Historia">
+                </div>
+                <div class="project-details">
+                    <span class="project-index">PROYECTO 02 // EDİTORİAL &amp; İLUSTRACİÓN</span>
+                    <h3 class="display-title">SABORES CON HİSTORİA</h3>
+                    <h4 class="display-subtitle">"RECETARİO İLUSTRADO — CASA EDİTORİAL UDA"</h4>
+                    <p class="project-desc">
+                        Diseño editorial, ilustración de portada y maquetación de libro patrimonial centrado en la tradición culinaria familiar de Susudel y el dulce ancestral de camote. Publicado por la Casa Editora de la Universidad del Azuay.
+                    </p>
+                    <div class="brutalist-block">
+                        <p class="block-label">TECNOLOGÍAS &amp; HERRAMİENTAS</p>
+                        <p class="slash-list">ADOBE İNDESİGN / İLLUSTRATOR / İLUSTRACİÓN DİGİTAL / PREPRENSA</p>
+                    </div>
+                    <div>
+                        <a href="mailto:lsuquisupao@gmail.com?subject=Consulta%20Sabores%20con%20Historia" class="brutal-link">→ VER PUBLİCACİÓN</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROYECTO 3: PAISAJE ESTUDIO -->
+            <article class="project-row">
+                <div class="crt-frame project-media">
+                    <!-- REEMPLAZA src="img/proyecto-paisaje.png" CON LA CAPTURA DE PAISAJE ESTUDIO (PÁG. 7-8) -->
+                    <img src="img/proyecto-paisaje.png" 
+                         onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80'" 
+                         alt="Identidad Visual Paisaje Estudio">
+                </div>
+                <div class="project-details">
+                    <span class="project-index">PROYECTO 03 // İDENTİDAD VİSUAL</span>
+                    <h3 class="display-title">PAİSAJE ESTUDİO</h3>
+                    <h4 class="display-subtitle">"SİSTEMA GRÁFİCO &amp; GEOMETRÍA ORGÁNİCA"</h4>
+                    <p class="project-desc">
+                        Creación de sistema modular y símbolo radial basado en simetría orgánica y atmósferas monocromáticas. Exploración tipográfica experimental y piezas gráficas aplicadas a papelería y soporte digital.
+                    </p>
+                    <div class="brutalist-block">
+                        <p class="block-label">TECNOLOGÍAS &amp; HERRAMİENTAS</p>
+                        <p class="slash-list">İLLUSTRATOR / LIGHTROOM CLASSİC / PHOTOSHOP / SİSTEMAS RETİCULARES</p>
+                    </div>
+                    <div>
+                        <a href="mailto:lsuquisupao@gmail.com?subject=Consulta%20Paisaje%20Estudio" class="brutal-link">→ EXPLORAR SİSTEMA</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROYECTO 4: FOTOGRAFÍA COMERCIAL & EDITORIAL (SIRENZA / 212 VIP) -->
+            <article class="project-row">
+                <div class="crt-frame project-media">
+                    <!-- REEMPLAZA src="img/proyecto-fotografia.png" CON LA CAPTURA DE SIRENZA O 212 VIP (PÁG. 11-12) -->
+                    <img src="img/proyecto-fotografia.png" 
+                         onerror="this.src='https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80'" 
+                         alt="Fotografía de Producto y Editorial Sirenza">
+                </div>
+                <div class="project-details">
+                    <span class="project-index">PROYECTO 04 // FOTOGRAFÍA &amp; PRODUCCİÓN</span>
+                    <h3 class="display-title">SİRENZA &amp; 212 VİP</h3>
+                    <h4 class="display-subtitle">"FOTOGRAFÍA EDİTORİAL DE JOYERÍA Y PRODUCTO"</h4>
+                    <p class="project-desc">
+                        Dirección fotográfica en locación natural para la marca de joyería Sirenza y fotografía comercial de alta velocidad e iluminación controlada en estudio para perfumería (212 VIP Black Carolina Herrera).
+                    </p>
+                    <div class="brutalist-block">
+                        <p class="block-label">TECNOLOGÍAS &amp; HERRAMİENTAS</p>
+                        <p class="slash-list">FOTOGRAFÍA DSLR / İLUMİNACİÓN DE ESTUDİO / LIGHTROOM / RETOQUE AVANZADO</p>
+                    </div>
+                    <div>
+                        <a href="mailto:lsuquisupao@gmail.com?subject=Consulta%20Fotografia" class="brutal-link">→ VER GALERÍA COMPLETA</a>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- =========================================================
+             PESTAÑA 3: HOBBIES E INTERESES PERSONALES
+             ========================================================= -->
+        <section id="tab-hobbies" class="tab-section">
+            <header class="section-header">
+                <p class="block-label">03 / FUERA DEL ESTUDİO</p>
+                <h2 class="display-title">HOBBİES &amp; INTERESES</h2>
+            </header>
+
+            <div class="hobbies-grid">
+                <!-- HOBBY 1: MÚSICA & GUITARRA -->
+                <article class="hobby-card">
+                    <div>
+                        <div class="crt-frame hobby-media">
+                            <!-- REEMPLAZA CON TU FOTO TOCANDO GUITARRA -->
+                            <img src="img/hobby-musica.png" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80'" 
+                                 alt="Guitarra eléctrica Telecaster">
+                        </div>
+                        <p class="block-label">ACTİVİDAD 01</p>
+                        <h3 class="hobby-title">MÚSİCA &amp; GUİTARRA</h3>
+                    </div>
+                    <p class="hobby-desc">
+                        Tocar la guitarra eléctrica (Telecaster) y explorar texturas sonoras experimentales. La música funciona como motor creativo directo para mis proyectos de sinestesia visual y diseño gráfico.
+                    </p>
+                </article>
+
+                <!-- HOBBY 2: FOTOGRAFÍA ANALÓGICA Y DE NATURALEZA -->
+                <article class="hobby-card">
+                    <div>
+                        <div class="crt-frame hobby-media">
+                            <!-- REEMPLAZA CON UNA FOTO TUYA EN LOCACIÓN -->
+                            <img src="img/hobby-fotografia.png" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=800&q=80'" 
+                                 alt="Fotografía y exploración visual">
+                        </div>
+                        <p class="block-label">ACTİVİDAD 02</p>
+                        <h3 class="hobby-title">FOTOGRAFÍA &amp; PAİSAJE</h3>
+                    </div>
+                    <p class="hobby-desc">
+                        Capturar retratos espontáneos, luces dramáticas y paisajes naturales del Azuay. Un ejercicio constante de observación, encuadre y narrativa visual fuera de la pantalla.
+                    </p>
+                </article>
+
+                <!-- HOBBY 3: ARTE GENERATIVO & EXPERIMENTACIÓN 3D -->
+                <article class="hobby-card">
+                    <div>
+                        <div class="crt-frame hobby-media">
+                            <!-- REEMPLAZA CON CAPTURA DE TOUCHDESIGNER O BLENDER -->
+                            <img src="img/hobby-visuales.png" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'" 
+                                 alt="Arte generativo y visuales en tiempo real">
+                        </div>
+                        <p class="block-label">ACTİVİDAD 03</p>
+                        <h3 class="hobby-title">VİSUALES &amp; 3D</h3>
+                    </div>
+                    <p class="hobby-desc">
+                        Experimentación libre en TouchDesigner y Blender creando visuales reactivos al audio, gráficos CRT/Lo-Fi y nuevas formas de cruzar código con diseño editorial.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <footer>
+            <span>© 2026 LUCİO SUQUİSUPA — CUENCA, ECUADOR</span>
+        </footer>
+    </main>
+
+    <script>
+        // Control del menú desplegable lateral
+        const menuOpenBtn = document.getElementById('menuOpenBtn');
+        const menuCloseBtn = document.getElementById('menuCloseBtn');
+        const navDrawer = document.getElementById('navDrawer');
+
+        menuOpenBtn.addEventListener('click', () => {
+            navDrawer.classList.add('open');
+        });
+
+        menuCloseBtn.addEventListener('click', () => {
+            navDrawer.classList.remove('open');
+        });
+
+        // Navegación entre las 3 pestañas obligatorias
+        const tabButtons = document.querySelectorAll('.nav-tab-btn');
+        const sections = document.querySelectorAll('.tab-section');
+        const drawerMenuButtons = document.querySelectorAll('.drawer-links .nav-tab-btn');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                if (!targetId) return;
+
+                // Ocultar todas las secciones y mostrar la elegida
+                sections.forEach(sec => sec.classList.remove('active'));
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+
+                // Actualizar estado activo en el menú
+                drawerMenuButtons.forEach(b => {
+                    b.classList.toggle('active', b.getAttribute('data-target') === targetId);
+                });
+
+                // Cerrar cajón lateral y subir al inicio
+                navDrawer.classList.remove('open');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
